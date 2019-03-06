@@ -1,25 +1,48 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
-#define rep(i,a,n) for (int i=a;i<n;i++)
-#define per(i,a,n) for (int i=n-1;i>=a;i--)
-#define pb push_back
-#define mp make_pair
-#define all(x) (x).begin(),(x).end()
+#define rep(i,a,n) for(int i=(a);i<(n);i++)
+#define per(i,a,n) for(int i=(n-1);i>=(a);i--)
 #define fi first
 #define se second
-#define SZ(x) ((int)(x).size())
-typedef vector<int> VI;
+typedef pair <int,int> pII;
 typedef long long ll;
-typedef pair<int,int> PII;
-const ll mod=1000000007;
-ll powmod(ll a,ll b) {ll res=1;a%=mod; assert(b>=0); for(;b;b>>=1){if(b&1)res=res*a%mod;a=a*a%mod;}return res;}
-ll gcd(ll a,ll b) { return b?gcd(b,a%b):a;}
-// head
-
+const int INF = 0x3f3f3f3f;
+//head
+int n;
+const int maxn = 1e6+100;
+char s[maxn];
+int vis[3*maxn];
+bool solve(){
+    if(s[0]!='M') return false;
+    int t = 0;
+    int len = strlen(s);
+    rep(i,1,len){
+        if(s[i]=='M') return false;
+        if(s[i]=='U') t += 3;
+        else t ++;
+    }
+    if(vis[t]) return true;
+    else return false;
+}
 int main(){
 #ifdef LOCAL
-    freopen("C.in","r",stdin);
-#endif // LOCAL
-
+    freopen("1.in","r",stdin);
+#endif
+    scanf("%d",&n);
+    for(int i=0;pow(2,i)<maxn;i++){
+        int x = pow(2,i);
+        while(x>0){
+            vis[x] = 1;
+            x -= 6;
+        }
+    }
+    while(n--){
+        scanf("%s",s);
+        if(solve()){
+            puts("Yes");
+        }else{
+            puts("No");
+        }
+    }
     return 0;
 }
