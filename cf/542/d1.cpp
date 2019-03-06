@@ -10,6 +10,16 @@ const int INF = 0x3f3f3f3f;
 //head
 const int maxn = 2e3+10;
 vector<int> e[maxn];
+int head[maxn];
+struct node{
+    int to,next;
+}G[maxn*maxn*2];
+int cnt = 0;
+void add_edge(int u,int v){
+    G[cnt].to = v;
+    G[cnt].next = head[u];
+    head[u] = cnt++;
+}
 // m is behind of the n
 int fa[maxn];
 int Find(int x){
@@ -23,13 +33,18 @@ void Union(int i,int j){
 int ind[maxn],use[maxn],vis[maxn];
 char mx[maxn][maxn];
 int n,m;
+void init(){
+    memset(head,-1,sizeof(head));
+    cnt = 0;
+}
 // flag means the 矛盾
 bool flag;
 int dp[maxn];
 void dfs(int x,int dep){
     if(flag) return ;
     dp[x] = max(dp[x],dep);
-    for(auto to:e[x]){
+    for(int i = head[x] ; ~i ;i=G[i].next){
+        int to = G[i].to;
         if(vis[to]) {
             flag = true;
             return ;
@@ -49,6 +64,7 @@ int main(){
     rep(i,0,n){
         scanf("%s",mx+i);
     }
+    init();
     rep(i,0,n+m) fa[i] = i;
     rep(i,0,n)
         rep(j,0,m)
@@ -57,11 +73,11 @@ int main(){
     rep(i,0,n) rep(j,0,m){
         int x = Find(i); int y = Find(j+n);
         if(mx[i][j] == '<'){
-            e[x].push_back(y);
+            add_edge(x,y);
             ind[y] ++;
             use[x] = 1;
         }else if(mx[i][j] == '>'){
-            e[y].push_back(x);
+            add_edge(y,x);
             ind[x] ++;
             use[y] = 1;
         }else{
