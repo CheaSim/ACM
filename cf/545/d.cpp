@@ -30,50 +30,26 @@ int main(){
 #endif
     scanf("%s",s); scanf("%s",t);
     getnxt(t);
-    bool flag = false;
     int len = strlen(t);
     int sz = 0;
-    if(len%(len-1 - nxt[len-1])==0) {
-        flag = 1;
-        sz = len/(len-1 - nxt[len-1]);
-    }
     int cnt0 = 0,cnt1 = 0;
     int len1 = strlen(s);
     rep(i,0,len1){
         if(s[i] == '1') cnt1++;
         else cnt0++;
     }
-    if(!flag){
-        int len = strlen(t);
-        int t1=0,t2=0;
-        rep(i,0,len) if(t[i] == '1') t1++; else t2++;
-        cnt0 -= t1;
-        cnt1 -= t2;
-        if(cnt0 < 0 || cnt1 < 0){
-            printf("%s",s);
-        }else{
-            printf("%s",t);
-            while(cnt0-->0) printf("0");
-            while(cnt1-->0) printf("1");
+    int i = 0;
+    bool flag = true;
+    while(flag && cnt0 > 0 && cnt1 > 0){
+        for(i;i<len;i++){
+            if(t[i] == '1' && cnt1-- > 0) printf("1");
+            else if(t[i] == '0' && cnt0-- > 0) printf("0");
+            else {
+                flag = false;break;
+            }
         }
-        return 0;
+        i = nxt[len];
     }
-    vector<char>ans;
-    vector<char> cir;
-    int ned0 = 0, ned1 = 0;
-    rep(i,0,sz){
-        cir.push_back(t[i]);
-        if(t[i] == '1') ned1++;
-        else ned0++;
-    }
-    if(ned0 == 0) ned0 = INF;
-    if(ned1 == 0) ned1 = INF;
-    int times = min(cnt0/ned0,cnt1/ned1);
-    rep(i,0,times){
-        for(auto &x:cir) printf("%c",x);
-    } 
-    cnt0 -= times*ned0;
-    cnt1 -= times*cnt1;
     while(cnt0-->0) printf("0");
     while(cnt1-->0) printf("1");
     return 0;
