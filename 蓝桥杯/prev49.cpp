@@ -28,16 +28,20 @@ void add_edge(int u,int v){
 int sta[maxn],top;
 int vis[maxn];
 vector<int> ans;
+bool gg = false;
 void dfs(int x,int fa){
+    if(gg) return;
     sta[top++] = x;
     for(int i=head[x];~i;i=G[i].next){
         int v = G[i].to;
         if(v == fa) continue;
         if(vis[v]){
-            for(int j=top;sta[j] != v;j--){
+            for(int j=top-1;sta[j] != v;j--){
                 ans.pb(sta[j]);
             }
-            continue;
+            ans.pb(v);
+            gg = true;
+            return;
         }
         vis[v] ++;
         dfs(v,x);
